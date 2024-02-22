@@ -93,6 +93,15 @@
     
   <!-- Main jQuery -->
     <script src="<?=base_url('assets/plugins/jquery/dist/jquery.min.js')?>"></script>
+    <!-- Swiper slider  -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<!-- AOS ANIMATION  -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
+<!-- AOS ANIMATION  -->
+
     <!-- Bootstrap 3.1 -->
     <script src="<?=base_url('assets/plugins/bootstrap/js/bootstrap.min.js')?>"></script>
     <!-- Parallax -->
@@ -181,6 +190,8 @@
         });
     });
 </script>
+
+
 
   </body>
 
