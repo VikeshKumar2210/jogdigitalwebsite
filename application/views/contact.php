@@ -120,7 +120,7 @@ End Fixed Navigation
 							Failed to sent the Mail
 						</div>
 						
-						<button type="submit"  class="btn btn-lg btn-primary">Submit</button>
+						<button type="submit" id="submit-button" class="btn btn-lg btn-primary">Submit</button>
 						
 					<!-- 	<div id="cf-submit">
 							<input type="submit" id="contact-submit" class="btn btn-transparent" value="Submit">
@@ -134,36 +134,39 @@ End Fixed Navigation
 		</div> <!-- end container -->
 	</section> <!-- end section -->
 <script type="text/javascript">
-$("#contact-form").submit(function(e){
-        e.preventDefault();
-        var formData = new FormData($(this)[0]);
-        // for (var value of formData.values()) {
-        //    console.log(value); 
-        // }
-         // var data = CKEDITOR.instances.editor1.getData();
-         // formData.append('content', data);
-        $.ajax({
-            url:"<?=base_url('Contact/sendmail')?>",
-             type:"post",
-             data:formData,
-             contentType:false,
-             processData:false,
-             cache:false,
-            success:function(response)
-            {
-               var response=JSON.parse(response);
-                console.log(response);
-            //   if(response.status==1){
-            //     $('#mail-success').show();
-            //     alert(response.msg);
-            //     location.reload();
-            //   }
-            //   else
-            //   {
-            //   $('#mail-fail').show();
-            //   location.reload();
-            //   }
+$("#contact-form").submit(function(e) {
+    e.preventDefault();
+    
+    // Disable the submit button and add a loader
+    var $submitButton = $('#submit-button');
+    $submitButton.prop('disabled', true).html('Sending... <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+
+    var formData = new FormData($(this)[0]);
+    $.ajax({
+        url: "<?=base_url('Contact/sendmail')?>",
+        type: "post",
+        data: formData,
+        contentType: false,
+        processData: false,
+        cache: false,
+        success: function(response) {
+            var response = JSON.parse(response);
+            if (response.status == 1) {
+                $('#mail-success').show();
+                $('#contact-form').trigger("reset");
+                // Reset button to its original state
+                $submitButton.prop('disabled', false).html('Submit');
+            } else {
+                $('#mail-fail').show();
+                location.reload(); // This will also reset the button implicitly
             }
-        });
+        },
+        error: function() {
+            // In case of AJAX failure, also reset the button
+            $submitButton.prop('disabled', false).html('Submit');
+            alert('There was an error. Please try again.');
+        }
     });
+});
+
 </script>
